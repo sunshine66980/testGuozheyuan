@@ -15,10 +15,9 @@ public class ClientReader implements Runnable {
     @Override
     public void run() {
 
-        try (
-                InputStream ips = socket.getInputStream();
-                DataInputStream dis = new DataInputStream(ips);
-        ) {
+        try  {
+            InputStream ips = socket.getInputStream();
+            DataInputStream dis = new DataInputStream(ips);
             while (true) {
                 int msgType = dis.readInt();
                 switch (msgType) {
@@ -27,9 +26,14 @@ public class ClientReader implements Runnable {
                         String allNickName = dis.readUTF();
                         String[] allNickNames = allNickName.split(ChatConstants.SPILIT);
                         clinetChat.onlineUser.setListData(allNickNames);
-                        System.out.println("在线用户写入列表");
                         break;
                     case ChatConstants.MSG_TYPE_CHAT:
+                        String userMessage = dis.readUTF();
+                        clinetChat.setSmsContent(userMessage);
+                        break;
+                    case ChatConstants.MSG_TYPE_PRIVATE:
+                        String msg = dis.readUTF();
+                        clinetChat.setSmsContent(msg);
                         break;
                     default:
                         break;

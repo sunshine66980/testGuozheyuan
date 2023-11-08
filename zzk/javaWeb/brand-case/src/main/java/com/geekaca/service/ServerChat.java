@@ -10,12 +10,12 @@ import java.util.Map;
 public class ServerChat {
     public static Map<Socket,String> onlineSocketMap = new HashMap<>();
     public static void main(String[] args) {
-        try (ServerSocket serverSocket = new ServerSocket(ChatConstants.PORT)) {
+        try {
+            ServerSocket serverSocket = new ServerSocket(ChatConstants.PORT);
             System.out.println(ChatConstants.PORT);
             while (true) {
 //                程序停在这一行
                 Socket socket = serverSocket.accept();
-
                 ServerRunnable serverRunnable = new ServerRunnable(socket);
                 new Thread(serverRunnable).start();
             }
