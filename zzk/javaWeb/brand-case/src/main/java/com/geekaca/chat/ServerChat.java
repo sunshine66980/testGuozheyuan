@@ -1,4 +1,4 @@
-package com.geekaca.service;
+package com.geekaca.chat;
 
 import java.io.IOException;
 import java.net.ServerSocket;

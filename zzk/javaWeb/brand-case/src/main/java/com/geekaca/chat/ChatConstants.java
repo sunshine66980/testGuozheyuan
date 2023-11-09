@@ -1,4 +1,4 @@
-package com.geekaca.service;
+package com.geekaca.chat;
 
 public class ChatConstants {
     public static final int PORT = 9010;

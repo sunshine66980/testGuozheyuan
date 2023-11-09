@@ -1,15 +1,10 @@
-package com.geekaca.service;
+package com.geekaca.chat;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-
-import javax.swing.text.DateFormatter;
 import java.io.*;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import java.util.Date;
-import java.util.Locale;
 
 public class ServerRunnable implements Runnable {
     private Socket clientSocket;
@@ -73,7 +68,6 @@ public class ServerRunnable implements Runnable {
                     DataOutputStream dos = new DataOutputStream(ops);
                     dos.writeInt(ChatConstants.MSG_TYPE_PRIVATE);
                     StringBuilder sb = new StringBuilder();
-
                     sb.append(LocalDateTime.now().format(dtf)).append(" ").append(sendNickName).append("对你说").append("\n").append(content).append("\n");
                     dos.writeUTF(sb.toString());
                     dos.flush();
