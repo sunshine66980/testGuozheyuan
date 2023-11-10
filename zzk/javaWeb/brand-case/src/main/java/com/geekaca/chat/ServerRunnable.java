@@ -26,6 +26,10 @@ public class ServerRunnable implements Runnable {
                         String nickName = dis.readUTF();
                         System.out.println("login:" + clientSocket.getRemoteSocketAddress() + " nick:" + nickName);
                         ServerChat.onlineSocketMap.put(clientSocket, nickName);
+                        //                        给线程名字
+                        Thread currentThread = getCurrentThread();
+                        currentThread.setName(nickName);
+                        System.out.println(currentThread.getName() + "启动");
 //                        广播
                         StringBuilder stringBuilder = new StringBuilder();
                         Collection<String> userNickNames = ServerChat.onlineSocketMap.values();
@@ -35,6 +39,7 @@ public class ServerRunnable implements Runnable {
 //                        去掉末尾分隔符
                         String str = stringBuilder.substring(0, stringBuilder.lastIndexOf(ChatConstants.SPILIT));
                         sendMsgToAll(str, ChatConstants.MSG_TYPE_LOGIN);
+
                         break;
                     case ChatConstants.MSG_TYPE_CHAT:
                         String msg = dis.readUTF();
@@ -64,6 +69,8 @@ public class ServerRunnable implements Runnable {
         ServerChat.onlineSocketMap.forEach((socket, nickName) -> {
             if (nickName.equals(toNickName)) {
                 try {
+                    Thread currentThread = getCurrentThread();
+                    System.out.println(currentThread.getName() + "发送私聊");
                     OutputStream ops = socket.getOutputStream();
                     DataOutputStream dos = new DataOutputStream(ops);
                     dos.writeInt(ChatConstants.MSG_TYPE_PRIVATE);
@@ -81,6 +88,8 @@ public class ServerRunnable implements Runnable {
     void sendMsgToAll(String str, int type) {
         ServerChat.onlineSocketMap.forEach((socket, nickName) -> {
             try {
+                Thread currentThread = getCurrentThread();
+                System.out.println(currentThread.getName() + "发送消息");
                 DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
                 System.out.println("服务端准备发送广播");
                 dos.writeInt(type);
@@ -91,5 +100,9 @@ public class ServerRunnable implements Runnable {
                 e.printStackTrace();
             }
         });
+    }
+
+    private Thread getCurrentThread(){
+        return Thread.currentThread();
     }
 }
