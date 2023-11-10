@@ -1,5 +1,8 @@
 package com.geekaca.thread.pool;
 
+import com.geekaca.chat.ServerRunnable;
+
+import java.net.Socket;
 import java.util.concurrent.*;
 
 public class ThreadPool {
@@ -21,5 +24,9 @@ public class ThreadPool {
         ExecutorService threadPool = new ThreadPoolExecutor(2, 3, 10,
                 TimeUnit.SECONDS, watiQueue, Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
 
+        ServerRunnable serverRunnable = new ServerRunnable(null);
+//      new Thread(serverRunnable).start();
+//                线程池
+        threadPool.execute(serverRunnable);
     }
 }

@@ -27,7 +27,7 @@ public class ServerChat {
                 ServerRunnable serverRunnable = new ServerRunnable(socket);
 //                new Thread(serverRunnable).start();
 //                线程池
-                threadPool.execute(new Thread(serverRunnable));
+                threadPool.execute(serverRunnable);
             }
         } catch (IOException e) {
             System.out.println("发生异常" + e.getMessage());
