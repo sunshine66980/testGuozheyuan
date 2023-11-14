@@ -15,19 +15,17 @@ public class TestBrand {
     private static DataSource dataSource;
 
     public static void init() throws Exception {
-
-        if (dataSource == null){
             //    加载配置
             Properties prop = new Properties();
             prop.load(new FileInputStream("src/main/java/com/geekaca/properties/druid.properties"));
 //        DataSource是java官方规范，DruidDataSourceFactory是厂商自己实现的
             dataSource = DruidDataSourceFactory.createDataSource(prop);
-        }
-
     }
 
     private static Connection getConnection() throws Exception {
-        init();
+        if (dataSource == null){
+            init();
+        }
         Connection connection = dataSource.getConnection();
         return connection;
 //        connection.close();
