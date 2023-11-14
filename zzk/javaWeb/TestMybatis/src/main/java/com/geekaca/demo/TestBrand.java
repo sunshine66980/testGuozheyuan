@@ -5,25 +5,25 @@ import com.geekaca.pojo.Brand;
 
 import javax.sql.DataSource;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Properties;
-import java.util.UUID;
 
 public class TestBrand {
 
     private static DataSource dataSource;
 
     public static void init() throws Exception {
-        //    加载配置
-        Properties prop = new Properties();
-        prop.load(new FileInputStream("src/main/java/com/geekaca/properties/druid.properties"));
+
+        if (dataSource == null){
+            //    加载配置
+            Properties prop = new Properties();
+            prop.load(new FileInputStream("src/main/java/com/geekaca/properties/druid.properties"));
 //        DataSource是java官方规范，DruidDataSourceFactory是厂商自己实现的
-        dataSource = DruidDataSourceFactory.createDataSource(prop);
+            dataSource = DruidDataSourceFactory.createDataSource(prop);
+        }
+
     }
 
     private static Connection getConnection() throws Exception {
@@ -34,6 +34,7 @@ public class TestBrand {
     }
 
     public static void main(String[] args) throws Exception {
+
 //        testAdd();
 //        testDelete();
 //        testUpdate();
@@ -92,7 +93,7 @@ public class TestBrand {
 
     }
 
-    private static void testDelete() throws Exception {
+    public static void testDelete() throws Exception {
         Connection connection = getConnection();
         String sql = "delete from tb_brand where id = ?";
         PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -109,7 +110,7 @@ public class TestBrand {
         connection.close();
 
     }
- private static void testSelect(int id) throws Exception {
+ public static Brand testSelect(int id) throws Exception {
         Connection connection = getConnection();
         String sql = "select * from tb_brand where id = ?";
         PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -125,7 +126,9 @@ public class TestBrand {
            brand.setId(rs.getInt("id"));
        }
      System.out.println(brand);
-        connection.close();
+     connection.close();
+
+     return brand;
 
     }
 
